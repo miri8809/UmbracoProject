@@ -2,8 +2,10 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Post>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 @using System.Text.RegularExpressions
+<link rel="stylesheet" href="~/css/PostPage.css" />
+
 @{
-	Layout = null;
+    Layout = null;
 }
 <h1>@Model.Title</h1>
 <p>
@@ -13,5 +15,5 @@
     }
     @truncatedText
 </p>
-<b>@Model.AutherName</b>
-<span>@Model.PublishDate.ToString("dd-MM-yyyy")</span>
+<b class="post-author">@Model.AutherName</b>
+<span class="publish-date">@Model.PublishDate.ToString("dd-MM-yyyy")</span>

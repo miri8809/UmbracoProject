@@ -1,0 +1,21 @@
+﻿h1 {
+    font-size: 2em;
+    color: #333;
+}
+
+p {
+    font-size: 1em;
+    color: #555;
+    line-height: 1.5;
+    width:250px;
+}
+
+.post-author {
+    font-weight: bold;
+    color: #777;
+}
+
+.publish-date {
+    font-style: italic;
+    color: #aaa;
+}

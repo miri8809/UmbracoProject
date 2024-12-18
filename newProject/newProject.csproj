@@ -5,9 +5,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Controllers\BlogController.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="umbraco\Logs\UmbracoTraceLog.W10N-MIRIAMFL.20241217.json" />
   </ItemGroup>
 
@@ -22,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="umbraco\Data\TEMP\FileUploads\" />
     <Folder Include="umbraco\Data\TEMP\InMemoryAuto\" />
     <Folder Include="wwwroot\media\" />

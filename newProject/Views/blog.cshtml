@@ -1,7 +1,8 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Blog>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
-@using Microsoft.AspNetCore.Http; 
+@using Microsoft.AspNetCore.Http;
+<link rel="stylesheet" href="~/css/BlogPage.css" />
 @{
     Layout = null;
     int pageSize = 5; // מספר הפוסטים בכל עמוד
@@ -28,34 +29,36 @@
     // חישוב הפוסטים שצריך להציג בעמוד הנוכחי
     var pagedPosts = posts.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 }
+<div class="blogPage">
+    <h1>@Model.Title</h1>
+    <h1>@Model.Description</h1>
 
-<h1>@Model.Title</h1>
-<h1>@Model.Description</h1>
-
-@foreach (var post in pagedPosts)
-{
-    Html.RenderPartial("post", post);
-}
-
-// דפדוף
-<div>
-    @if (pageNumber > 1)
+    @foreach (var post in pagedPosts)
     {
-        <a href="?page=@(pageNumber - 1)&tag=@tagName">קודם</a>
+        <div class="post">
+            @Html.Partial("post", post)
+        </div>
     }
-    @for (int i = 1; i <= totalPages; i++)
-    {
-        if (i == pageNumber)
+
+    <div class="pagination">
+        @if (pageNumber > 1)
         {
-            <span style="border: 1px solid black; padding: 5px;">@i</span> <!-- העמוד הנוכחי עם מסגרת -->
+            <a href="?page=@(pageNumber - 1)&tag=@tagName">קודם</a>
         }
-        else
+        @for (int i = 1; i <= totalPages; i++)
         {
-            <a href="?page=@i&tag=@tagName">@i</a>
+            if (i == pageNumber)
+            {
+                <span>@i</span> <!-- העמוד הנוכחי עם מסגרת -->
+            }
+            else
+            {
+                <a href="?page=@i&tag=@tagName">@i</a>
+            }
         }
-    }
-    @if (pageNumber < totalPages)
-    {
-        <a href="?page=@(pageNumber + 1)&tag=@tagName">הבא</a> <!-- כאן יש לוודא שהקישור מעדכן את העמוד -->
-    }
+        @if (pageNumber < totalPages)
+        {
+            <a href="?page=@(pageNumber + 1)&tag=@tagName">הבא</a> <!-- כאן יש לוודא שהקישור מעדכן את העמוד -->
+        }
+    </div>
 </div>
