@@ -1,0 +1,17 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Post>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using System.Text.RegularExpressions
+@{
+	Layout = null;
+}
+<h1>@Model.Title</h1>
+<p>
+    @{
+        var plainText = Regex.Replace(Model.BodyContent.ToString(), "<.*?>", string.Empty); // מסיר תגיות HTML
+        var truncatedText = plainText.Length > 200 ? plainText.Substring(0, 200) + "..." : plainText;
+    }
+    @truncatedText
+</p>
+<b>@Model.AutherName</b>
+<span>@Model.PublishDate.ToString("dd-MM-yyyy")</span>

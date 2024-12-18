@@ -6,6 +6,7 @@ builder.CreateUmbracoBuilder()
     .AddDeliveryApi()
     .AddComposers()
     .Build();
+builder.Services.AddHttpClient<BlogController>();
 
 WebApplication app = builder.Build();
 

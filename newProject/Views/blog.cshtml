@@ -1,8 +1,61 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Blog>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Microsoft.AspNetCore.Http; 
 @{
-	Layout = null;
+    Layout = null;
+    int pageSize = 5; // מספר הפוסטים בכל עמוד
+
+    int pageNumber = 1; // מספר העמוד הנוכחי
+    int.TryParse(Context.Request.Query["page"], out pageNumber); // קבלת מספר העמוד מהשאלה
+    if (pageNumber == 0)
+        pageNumber = 1;
+
+    string tagName = Context.Request.Query["tag"]; // קבלת התגית מה-query string
+    var posts = Model.Children().ToList(); // כל הפוסטים
+
+    // סנן את הפוסטים לפי התגית אם היא קיימת
+    if (!string.IsNullOrEmpty(tagName))
+    {
+        posts = posts.Where(post => (post as Post).Tags != null &&
+            (post as Post).Tags.Any(tag =>
+                tag.Equals(tagName, StringComparison.OrdinalIgnoreCase))).ToList();
+    }
+
+    var totalPosts = posts.Count; // סך כל הפוסטים
+    var totalPages = (int)Math.Ceiling((double)totalPosts / pageSize); // חישוב מספר העמודים
+
+    // חישוב הפוסטים שצריך להציג בעמוד הנוכחי
+    var pagedPosts = posts.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 }
+
 <h1>@Model.Title</h1>
 <h1>@Model.Description</h1>
+
+@foreach (var post in pagedPosts)
+{
+    Html.RenderPartial("post", post);
+}
+
+// דפדוף
+<div>
+    @if (pageNumber > 1)
+    {
+        <a href="?page=@(pageNumber - 1)&tag=@tagName">קודם</a>
+    }
+    @for (int i = 1; i <= totalPages; i++)
+    {
+        if (i == pageNumber)
+        {
+            <span style="border: 1px solid black; padding: 5px;">@i</span> <!-- העמוד הנוכחי עם מסגרת -->
+        }
+        else
+        {
+            <a href="?page=@i&tag=@tagName">@i</a>
+        }
+    }
+    @if (pageNumber < totalPages)
+    {
+        <a href="?page=@(pageNumber + 1)&tag=@tagName">הבא</a> <!-- כאן יש לוודא שהקישור מעדכן את העמוד -->
+    }
+</div>
